@@ -1,0 +1,10 @@
+declare module 'restify-joi-middleware';
+declare module 'glob-fs';
+declare module 'restify-await-promise';
+declare module 'hat';
+declare module 'restify-logger';
+declare module 'await-to-js';
+declare module 'promievent';
+declare module 'joi-route-to-swagger';
+declare module 'write-yaml';
+declare module 'apiaryio';
