@@ -27,10 +27,26 @@ export default class AppsController implements IController {
     }
   }
 
+  public async put(req: IRequest, res: IResponse) {
+    const jobId: string = req.params.job_id;
+    const payload: any = req.body;
+    try {
+      await Job.findByIdAndUpdate(jobId, req.body).exec();
+      return res.send({ success: true, message: 'Job updated successfully' });
+    } catch (e) {
+      req.log.error(e);
+      throw new InternalServerError(e);
+    }
+  }
+
   public async getAll(req: IRequest, res: IResponse) {
     const userId: string = req.client_id;
     try {
-      const jobs = await Job.find({ client_id: userId });
+      const jobs = await Job.find({
+        client_id: userId
+      })
+      .populate('actions.action', 'event_name params_schema description _id')
+      .populate('trigger.id', 'event_name description _id');
       return res.send(jobs);
     } catch (e) {
       req.log.error(e);

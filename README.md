@@ -9,7 +9,7 @@ We use `yarn` to install the packages. Do
 ```
 in the project's directory. After installing you need to set up environment variables. In Unix based systems you can do:
 ```
- export TB_JOBS_API_DB="Postgresql db string here"
+ export TB_JOBS_API_DB="Mongo db string here"
 ```
 
 > Contact the collaborators to get remote db string and node string.

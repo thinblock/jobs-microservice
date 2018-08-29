@@ -34,10 +34,29 @@ class JobsRoute implements IRoute {
                 }))
               },
               actions: Joi.array().items(Joi.object().keys({
-                id: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+                action: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
                 params: Joi.object()
               })),
             }).required()
+          }
+        },
+      },
+      {
+        method: HttpMethods.PUT,
+        auth: AuthStrategies.PUBLIC,
+        handler: this.controller.put,
+        param: 'job_id',
+        validation: {
+          schema: {
+            body: Joi.object().keys({
+              last_run: {
+                output: Joi.string(),
+                date: Joi.date().required()
+              }
+            }).required(),
+            params: {
+              job_id: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            }
           }
         },
       }
