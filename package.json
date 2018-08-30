@@ -20,7 +20,7 @@
     "hat": "^0.0.3",
     "joi": "^13.4.0",
     "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.2.8",
+    "mongoose": "^5.2.10",
     "node-uuid": "^1.4.8",
     "restify": "^4.1.1",
     "restify-await-promise": "^1.0.2",

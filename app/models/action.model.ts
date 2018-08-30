@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 
 const ParamsSchema = new Schema({
   _id: Schema.Types.ObjectId,

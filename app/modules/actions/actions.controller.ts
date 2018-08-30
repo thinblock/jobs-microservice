@@ -1,9 +1,10 @@
-import { InternalServerError } from 'restify-errors';
+import { InternalServerError, BadRequestError } from 'restify-errors';
 import to from 'await-to-js';
 import IController from '../../interfaces/utils/IController';
 import Action, { IAction } from '../../models/action.model';
 import { IRequest, IResponse } from '../../interfaces/utils/IServer';
 import { createTopic } from '../../../utils/helpers';
+import { ErrorCodes } from '../../interfaces/utils/Mongoose';
 
 export default class AppsController implements IController {
   public async post(req: IRequest, res: IResponse) {
@@ -27,6 +28,9 @@ export default class AppsController implements IController {
       return res.send(obj.toJSON());
     } catch (e) {
       req.log.error(e);
+      if (e.code === ErrorCodes.DUPLICATE_KEY) {
+        return res.send(new BadRequestError('event_name key must be unique'));
+      }
       return res.send(new InternalServerError(e));
     }
   }

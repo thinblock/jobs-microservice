@@ -5,7 +5,7 @@ import { config } from './env';
 
 async function initDb() {
   const options = {
-    autoIndex: false,
+    autoIndex: true,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 500,
     poolSize: 10,
