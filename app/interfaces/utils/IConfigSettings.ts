@@ -8,6 +8,7 @@ interface EnvConfig {
   test: boolean;
   oAuthSecret: string;
   newJobTopicARN: string;
+  aws_region: string;
 }
 
 export {

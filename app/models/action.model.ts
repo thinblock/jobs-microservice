@@ -23,6 +23,10 @@ const ActionsSchema = new Schema({
     required: true,
     unique: true
   },
+  sns_topic_arn: {
+    type: String,
+    unique: true
+  },
   description: {
     type: String,
     required: true
@@ -44,6 +48,7 @@ interface IActionParams {
 export interface IAction extends Document {
   event_name: string;
   description: string;
+  sns_topic_arn: string;
   params_schema: [IActionParams];
   created_at?: Date;
   updated_at?: Date;

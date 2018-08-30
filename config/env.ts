@@ -15,7 +15,8 @@ const config: EnvConfig = {
   port: 8080,
   db: process.env.TB_JOBS_DB_STRING,
   oAuthSecret: process.env.TB_OAUTH_SECRET || 'asdfasfshdfklsahfsl',
-  newJobTopicARN: process.env.TB_JOBS_NEW_JOB_TOPIC_ARN
+  newJobTopicARN: process.env.TB_JOBS_NEW_JOB_TOPIC_ARN,
+  aws_region: process.env.TB_AWS_REGION || 'ap-southeast-1'
 };
 
 
