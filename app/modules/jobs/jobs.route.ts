@@ -15,6 +15,26 @@ class JobsRoute implements IRoute {
         handler: this.controller.getAll,
       },
       {
+        method: HttpMethods.GET,
+        auth: AuthStrategies.PUBLIC,
+        handler: this.controller.get,
+        param: 'jobId',
+        validation: {
+          schema: {
+            params: {
+              jobId: Joi.when('look_up', {
+                is: '_id',
+                then: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
+                otherwise: Joi.string().regex(
+                  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                )
+              }).required(),
+              look_up: Joi.string().valid(['_id', 'token'])
+            }
+          }
+        }
+      },
+      {
         method: HttpMethods.POST,
         auth: AuthStrategies.OAUTH,
         handler: this.controller.post,
