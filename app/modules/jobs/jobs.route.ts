@@ -53,6 +53,14 @@ class JobsRoute implements IRoute {
                   }).required()
                 }))
               },
+              notification: Joi.object().keys({
+                type: Joi.string().valid(['WEBHOOK', 'SMS', 'EMAIL']).default('WEBHOOK'),
+                token: Joi.string(),
+                value: Joi.string()
+                  .when('type', { is: 'WEBHOOK', then: Joi.string().uri() })
+                  .concat(Joi.string().when('type', { is: 'EMAIL', then: Joi.string().email() })
+                  .required())
+              }).required(),
               actions: Joi.array().items(Joi.object().keys({
                 action: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
                 params: Joi.object()

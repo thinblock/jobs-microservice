@@ -58,6 +58,21 @@ const JobsSchema = new Schema({
     date: { type: Date },
     output: {}
   },
+  notification: {
+    type: {
+      type: String,
+      enum: ['SMS', 'EMAIL', 'WEBHOOK'],
+      required: true
+    },
+    value: {
+      type: String,
+      required: true
+    },
+    token: {
+      type: String,
+      default: ''
+    },
+  },
   stats: {
     failed_count: {
       type: Number,
@@ -101,6 +116,11 @@ export interface IJob extends Document {
   last_run: {
     date: Date;
     output: any;
+  };
+  notification: {
+    type: string;
+    value: string;
+    token?: string;
   };
   stats: {
     failed_count: number;
