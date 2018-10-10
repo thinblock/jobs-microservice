@@ -3,7 +3,7 @@ import * as Joi from 'joi';
 import { IRoute, IRouteConfig, HttpMethods, AuthStrategies } from '../../interfaces/utils/Route';
 
 class ActionsRoute implements IRoute {
-  public basePath = '/actions';
+  public basePath = '/test';
   public controller = new ActionsController();
 
   public getServerRoutes(): IRouteConfig[] {

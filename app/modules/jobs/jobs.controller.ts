@@ -132,7 +132,7 @@ export default class AppsController implements IController {
 
     try {
       const job = await Job.findOne({ [lookBy]: jobId })
-        .populate('actions.action', 'event_name params_schema description _id')
+        .populate('actions.action', 'event_name params_schema description sns_topic_arn _id')
         .populate('trigger.id', 'event_name description _id');
 
       if (!job) {
