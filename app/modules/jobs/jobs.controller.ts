@@ -41,12 +41,84 @@ export default class AppsController implements IController {
 
   public async getAll(req: IRequest, res: IResponse) {
     const userId: string = req.client_id;
+    const trigger: string = req.query.trigger;
     try {
-      const jobs = await Job.find({
-        client_id: userId
-      })
-      .populate('actions.action', 'event_name params_schema description _id')
-      .populate('trigger.id', 'event_name description _id');
+      const pipeline = [];
+
+      pipeline.push({
+        $match: {
+          active: true
+        }
+      });
+      pipeline.push({
+        $lookup: {
+          from: 'triggers',
+          localField: 'trigger.id',
+          foreignField: '_id',
+          as: 'trigger.data'
+        }
+      });
+      pipeline.push({
+        $unwind: '$actions'
+      });
+      pipeline.push({
+        $unwind: '$actions.action'
+      });
+      pipeline.push({
+        $lookup: {
+          from: 'actions',
+          localField: 'actions.action',
+          foreignField: '_id',
+          as: 'actions.action'
+        }
+      });
+      pipeline.push({
+        $unwind: '$trigger.data'
+      });
+      pipeline.push({
+        $group: {
+          _id: '$_id',
+          token: {
+            $first: '$token'
+          },
+          notification: {
+            $first: '$notification'
+          },
+          last_run: {
+            $first: '$last_run'
+          },
+          'trigger': {
+            $first: '$trigger'
+          },
+          actions: {
+            $push: '$actions'
+          }
+        }
+      });
+
+      pipeline.push({
+        $project: {
+          _id: 1,
+          token: 1,
+          notification: 1,
+          last_run: 1,
+          'actions.action.event_name': 1,
+          'actions.action.sns_topic_arn': 1,
+          'actions._id': 1,
+          'actions.params': 1,
+          'trigger.data.event_name': 1,
+          'trigger.conditions': 1
+        }
+      });
+
+      if (trigger) {
+        pipeline.push({
+          $match: {
+            'trigger.data.event_name': trigger
+          }
+        });
+      }
+      const jobs = await Job.aggregate(pipeline);
       return res.send(jobs);
     } catch (e) {
       req.log.error(e);

@@ -11,8 +11,16 @@ class JobsRoute implements IRoute {
     return [
       {
         method: HttpMethods.GET,
-        auth: AuthStrategies.OAUTH,
+        auth: AuthStrategies.PUBLIC,
         handler: this.controller.getAll,
+        validation: {
+          schema: {
+            query: {
+              trigger: Joi.string()
+            }
+          }
+        }
+
       },
       {
         method: HttpMethods.GET,
