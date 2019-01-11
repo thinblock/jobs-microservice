@@ -16,7 +16,8 @@ class JobsRoute implements IRoute {
         validation: {
           schema: {
             query: {
-              trigger: Joi.string()
+              trigger: Joi.string(),
+              active: Joi.boolean()
             }
           }
         }

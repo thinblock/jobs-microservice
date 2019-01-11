@@ -41,15 +41,20 @@ export default class AppsController implements IController {
 
   public async getAll(req: IRequest, res: IResponse) {
     const userId: string = req.client_id;
+
     const trigger: string = req.query.trigger;
     try {
       const pipeline = [];
 
-      pipeline.push({
-        $match: {
-          active: true
-        }
-      });
+      if (req.query.active === true) {
+        pipeline.push({
+          $match: {
+            active: true,
+            client_id: userId,
+          }
+        });
+      }
+
       pipeline.push({
         $lookup: {
           from: 'triggers',
@@ -102,6 +107,7 @@ export default class AppsController implements IController {
           token: 1,
           notification: 1,
           last_run: 1,
+          active: 1,
           'actions.action.event_name': 1,
           'actions.action.sns_topic_arn': 1,
           'actions._id': 1,
