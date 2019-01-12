@@ -41,6 +41,7 @@ export default class AppsController implements IController {
 
   public async getAll(req: IRequest, res: IResponse) {
     const userId: string = req.client_id;
+    const count: boolean = req.query.count;
 
     const trigger: string = req.query.trigger;
     try {
@@ -124,8 +125,10 @@ export default class AppsController implements IController {
           }
         });
       }
+
       const jobs = await Job.aggregate(pipeline);
-      return res.send(jobs);
+
+      return res.send(count ? jobs.length : jobs);
     } catch (e) {
       req.log.error(e);
       throw new InternalServerError(e);

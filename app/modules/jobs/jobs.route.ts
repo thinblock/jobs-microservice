@@ -17,7 +17,8 @@ class JobsRoute implements IRoute {
           schema: {
             query: {
               trigger: Joi.string(),
-              active: Joi.boolean()
+              active: Joi.boolean(),
+              count: Joi.boolean(),
             }
           }
         }
